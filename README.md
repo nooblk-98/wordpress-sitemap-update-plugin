@@ -2,6 +2,12 @@
 
 **Easy Sitemap & Robots.txt Manager** is a lightweight and user-friendly WordPress plugin that lets you effortlessly manage your main sitemap, image sitemap, and robots.txt file directly from your WordPress dashboard.
 
+
+## 🖼️ Screenshot
+
+![Sitemap Uploader Screenshot](/images/demo.png.png)
+
+
 ## 🔍 Features
 
 - Upload and edit XML sitemaps, including image sitemaps
