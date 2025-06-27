@@ -5,7 +5,7 @@
 
 ## 🖼️ Screenshot
 
-![Sitemap Uploader Screenshot](/images/demo.png.png)
+![Sitemap Uploader Screenshot](/images/demo.png)
 
 
 ## 🔍 Features
