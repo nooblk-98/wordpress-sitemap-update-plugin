@@ -38,8 +38,6 @@
 
 - Upload your sitemap file (e.g., `sitemap.xml` or `image-sitemap.xml`)
 - View or edit the content inline
-- Save changes with one click
-- Manage multiple image URLs directly via the admin panel
 
 ## 🤝 Contributing
 
