@@ -1,6 +1,11 @@
+name: Auto Release on Main Push
+
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
-    
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -9,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch all history for tags
+          fetch-depth: 0  # Fetch all history to access tags
 
       - name: Get latest tag
         id: get_tag
@@ -20,25 +25,21 @@ jobs:
       - name: Bump version
         id: bump_version
         run: |
-          # Extract version numbers
-          latest_tag=${{ env.LATEST_TAG }}
-          version=${latest_tag#v}
+          version=${{ env.LATEST_TAG#v }}
           major=$(echo $version | cut -d. -f1)
           minor=$(echo $version | cut -d. -f2)
           patch=$(echo $version | cut -d. -f3)
-
-          # Increment patch version
-          new_version="v$major.$minor.$((patch+1))"
+          new_version="v$major.$minor.$((patch + 1))"
           echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
 
-      - name: Create Git Tag
+      - name: Create Git Tag and Push
         env:
-          GITHUB_PAT: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git tag -a ${{ env.NEW_VERSION }} -m "Release ${{ env.NEW_VERSION }}"
-          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push origin ${{ env.NEW_VERSION }}
 
       - name: Create GitHub Release
@@ -47,4 +48,4 @@ jobs:
           tag: ${{ env.NEW_VERSION }}
           name: Release ${{ env.NEW_VERSION }}
           generateReleaseNotes: true
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
