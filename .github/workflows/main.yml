@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch all history to access tags
+          fetch-depth: 0
 
       - name: Get latest tag
         id: get_tag
@@ -25,12 +25,14 @@ jobs:
       - name: Bump version
         id: bump_version
         run: |
-          version=${{ env.LATEST_TAG#v }}
-          major=$(echo $version | cut -d. -f1)
-          minor=$(echo $version | cut -d. -f2)
-          patch=$(echo $version | cut -d. -f3)
+          version="${LATEST_TAG#v}"
+          major=$(echo "$version" | cut -d. -f1)
+          minor=$(echo "$version" | cut -d. -f2)
+          patch=$(echo "$version" | cut -d. -f3)
           new_version="v$major.$minor.$((patch + 1))"
           echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
+        env:
+          LATEST_TAG: ${{ env.LATEST_TAG }}
 
       - name: Create Git Tag and Push
         env:
